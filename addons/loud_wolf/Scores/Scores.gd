@@ -17,22 +17,22 @@ signal sw_wipe_leaderboard_complete
 signal sw_delete_score_complete
 
 # leaderboard scores by leaderboard name
-var leaderboards = {}
+var leaderboards := {}
 # leaderboard scores from past periods by leaderboard name and period_offset (negative integers)
-var leaderboards_past_periods = {}
+var leaderboards_past_periods := {}
 # leaderboard configurations by leaderboard name
-var ldboard_config = {}
+var ldboard_config := {}
 
 # contains only the scores from one leaderboard at a time
-var scores = []
-var player_scores = []
+var scores := []
+var player_scores := []
 var player_top_score = null
-var local_scores = []
+var local_scores := []
 #var custom_local_scores = []
-var score_id = ""
-var position = 0
-var scores_above = []
-var scores_below  = []
+var score_id := ""
+var position := 0.0
+var scores_above := []
+var scores_below  := []
 
 #var request_timeout = 3
 #var request_timer = null

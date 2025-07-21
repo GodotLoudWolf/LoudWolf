@@ -3,6 +3,10 @@ class_name LoudWolfAutoload
 
 const version := "0.0.1"
 var godot_version :String= Engine.get_version_info().string
+#Paths:
+const plugin_path:="res://addons/loud_wolf/"
+const utils_path:=plugin_path+"utils/"
+
 
 const SWUtils := preload("utils/SWUtils.gd")
 const SWHashing := preload("utils/SWHashing.gd")

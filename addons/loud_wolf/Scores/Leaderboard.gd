@@ -2,7 +2,7 @@
 extends CanvasLayer
 
 const ScoreItem = preload("ScoreItem.tscn")
-const SWLogger = preload("../utils/SWLogger.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 var list_index = 0
 # Replace the leaderboard name if you're not using the default leaderboard

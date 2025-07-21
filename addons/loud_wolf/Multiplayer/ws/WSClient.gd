@@ -1,6 +1,6 @@
 extends Node
 
-const SWLogger = preload("../utils/SWLogger.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 # The URL we will connect to
 @export var websocket_url = "wss://ws.LoudWolfmp.com/server"

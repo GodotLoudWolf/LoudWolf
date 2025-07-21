@@ -1,6 +1,6 @@
 extends Node
 
-const SWLogger = preload("../utils/SWLogger.gd") 
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd") 
 
 # Retrieves data stored as JSON in local storage
 # example path: "user://swsession.save"

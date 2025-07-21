@@ -1,6 +1,6 @@
 extends Node
 
-const SWUtils = preload("SWUtils.gd")
+const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
 
 static func get_log_level():
 	var log_level = 1

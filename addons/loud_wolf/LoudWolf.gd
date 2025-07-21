@@ -6,16 +6,16 @@ var godot_version :String= Engine.get_version_info().string
 #Paths:
 const plugin_path:="res://addons/loud_wolf/"
 const utils_path:=plugin_path+"utils/"
+const scores_path:=plugin_path+"Scores/"
+const auth_path:=plugin_path+"Auth/"
+const examples_path:=plugin_path+"examples/"
 
+#Example paths
+const custom_leaderboards_example_path:=examples_path+"CustomLeaderboards/"
 
-const SWUtils := preload("utils/SWUtils.gd")
-const SWHashing := preload("utils/SWHashing.gd")
-const SWLogger := preload("utils/SWLogger.gd")
-
-#var Auth = Node.new()
-#var Scores = Node.new()
-#var Players = Node.new()
-#var Multiplayer = Node.new()
+const SWUtils := preload(LoudWolf.utils_path+"SWUtils.gd")
+const SWHashing := preload(LoudWolf.utils_path+"SWHashing.gd")
+const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 
 @onready var Auth := LoudWolfAuth.new()
 @onready var Scores := LoudWolfScores.new()
@@ -29,7 +29,7 @@ const SWLogger := preload("utils/SWLogger.gd")
 # As a best practice, use LoudWolf.configure from your game's
 # code instead to set the LoudWolf configuration.
 #
-# See https://SilentWolf.com for more details
+# See https://loudwolf.angelator312.top for more details
 #
 var config = {
 	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",
@@ -37,15 +37,15 @@ var config = {
 	"log_level": 0
 }
 
-var scores_config = {
+var scores_config :Dictionary= {
 	"open_scene_on_close": "res://scenes/Splash.tscn"
 }
 
 var auth_config = {
 	"redirect_to_scene": "res://scenes/Splash.tscn",
-	"login_scene": "../Auth/Login.tscn",
-	"email_confirmation_scene": "../Auth/ConfirmEmail.tscn",
-	"reset_password_scene": "../Auth/ResetPassword.tscn",
+	"login_scene": auth_path+"Login.tscn",
+	"email_confirmation_scene": auth_path+"ConfirmEmail.tscn",
+	"reset_password_scene": auth_path+"ResetPassword.tscn",
 	"session_duration_seconds": 0,
 	"saved_session_expiration_days": 30
 }

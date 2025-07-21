@@ -1,6 +1,6 @@
 extends Node
 
-const SWLogger = preload("SWLogger.gd")
+const SWLogger = preload(LoudWolf.utils_path+ "SWLogger.gd")
 
 static func get_timestamp() -> int:
 	var unix_time: float = Time.get_unix_time_from_system()

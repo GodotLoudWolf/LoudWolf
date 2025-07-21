@@ -1,7 +1,7 @@
 extends TextureRect
 
 var player_name = null
-var login_scene = "../Auth/Login.tscn"
+var login_scene = LoudWolf.auth_path+"Login.tscn"
 
 
 # Called when the node enters the scene tree for the first time.

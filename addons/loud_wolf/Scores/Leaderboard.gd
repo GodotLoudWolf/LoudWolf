@@ -1,7 +1,7 @@
 @tool
 extends CanvasLayer
 
-const ScoreItem = preload("ScoreItem.tscn")
+const ScoreItem = preload(LoudWolf.scores_path+"ScoreItem.tscn")
 const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 var list_index = 0

@@ -1,21 +1,22 @@
 extends Node
+class_name LoudWolfAutoload
 
-const version = "0.0.1"
-var godot_version = Engine.get_version_info().string
+const version := "0.0.1"
+var godot_version :String= Engine.get_version_info().string
 
-const SWUtils = preload("utils/SWUtils.gd")
-const SWHashing = preload("utils/SWHashing.gd")
-const SWLogger = preload("utils/SWLogger.gd")
+const SWUtils := preload("utils/SWUtils.gd")
+const SWHashing := preload("utils/SWHashing.gd")
+const SWLogger := preload("utils/SWLogger.gd")
 
 #var Auth = Node.new()
 #var Scores = Node.new()
 #var Players = Node.new()
 #var Multiplayer = Node.new()
 
-@onready var Auth = LoudWolfAuth.new()
-@onready var Scores = LoudWolfScores.new()
-@onready var Players = LoudWolfPlayers.new()
-@onready var Multiplayer = LoudWolfMultiplayer.new()
+@onready var Auth := LoudWolfAuth.new()
+@onready var Scores := LoudWolfScores.new()
+@onready var Players := LoudWolfPlayers.new()
+@onready var Multiplayer := LoudWolfMultiplayer.new()
 
 #
 # LoudWolf CONFIG: THE CONFIG VARIABLES BELOW WILL BE OVERRIDED THE 
@@ -24,7 +25,7 @@ const SWLogger = preload("utils/SWLogger.gd")
 # As a best practice, use LoudWolf.configure from your game's
 # code instead to set the LoudWolf configuration.
 #
-# See https://LoudWolf.com for more details
+# See https://SilentWolf.com for more details
 #
 var config = {
 	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",
@@ -45,11 +46,6 @@ var auth_config = {
 	"saved_session_expiration_days": 30
 }
 
-var auth_script = load("../Auth/Auth.gd")
-var scores_script = load("../Scores/Scores.gd")
-var players_script = load("../Players/Players.gd")
-#var multiplayer_script = load("../Multiplayer/Multiplayer.gd")
-
 
 func _init():
 	print("SW Init timestamp: " + str(SWUtils.get_timestamp()))
@@ -59,11 +55,8 @@ func _ready():
 	# The following line would keep LoudWolf working even if the game tree is paused.
 	#pause_mode = Node.PAUSE_MODE_PROCESS
 	print("SW ready start timestamp: " + str(SWUtils.get_timestamp()))
-	#Auth.set_script(auth_script)
 	add_child(Auth)
-	#Scores.set_script(scores_script)
 	add_child(Scores)
-	#Players.set_script(players_script)
 	add_child(Players)
 	#Multiplayer.set_script(multiplayer_script)
 	#add_child(Multiplayer)

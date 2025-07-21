@@ -13,17 +13,6 @@ const examples_path:=plugin_path+"examples/"
 #Example paths
 const custom_leaderboards_example_path:=examples_path+"CustomLeaderboards/"
 
-#Paths:
-const plugin_path:="res://addons/loud_wolf/"
-const modules_path:=plugin_path+"modules/"
-const utils_path:=plugin_path+"utils/"
-const scores_path:=modules_path+"Scores/"
-const auth_path:=modules_path+"Auth/"
-const examples_path:=plugin_path+"examples/"
-
-#Example paths
-const custom_leaderboards_example_path:=examples_path+"CustomLeaderboards/"
-
 const SWUtils := preload(LoudWolf.utils_path+"SWUtils.gd")
 const SWHashing := preload(LoudWolf.utils_path+"SWHashing.gd")
 const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
@@ -50,15 +39,11 @@ var config = {
 }
 
 var scores_config :Dictionary= {
-var scores_config :Dictionary= {
 	"open_scene_on_close": "res://scenes/Splash.tscn"
 }
 
 var auth_config = {
 	"redirect_to_scene": "res://scenes/Splash.tscn",
-	"login_scene": auth_path+"Login.tscn",
-	"email_confirmation_scene": auth_path+"ConfirmEmail.tscn",
-	"reset_password_scene": auth_path+"ResetPassword.tscn",
 	"login_scene": auth_path+"Login.tscn",
 	"email_confirmation_scene": auth_path+"ConfirmEmail.tscn",
 	"reset_password_scene": auth_path+"ResetPassword.tscn",

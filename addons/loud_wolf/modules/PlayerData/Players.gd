@@ -1,5 +1,5 @@
 extends Node
-class_name LoudWolfPlayers
+class_name LoudWolfPlayerData
 
 const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
 const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")

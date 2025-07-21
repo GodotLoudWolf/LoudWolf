@@ -3,6 +3,7 @@ class_name LoudWolfAutoload
 
 const version := "0.0.1"
 var godot_version :String= Engine.get_version_info().string
+
 #Paths:
 const plugin_path:="res://addons/loud_wolf/"
 const modules_path:=plugin_path+"modules/"
@@ -20,7 +21,7 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 
 @onready var Auth := LoudWolfAuth.new()
 @onready var Scores := LoudWolfScores.new()
-@onready var Players := LoudWolfPlayers.new()
+@onready var PlayerData := LoudWolfPlayerData.new()
 @onready var Multiplayer := LoudWolfMultiplayer.new()
 
 #
@@ -62,8 +63,7 @@ func _ready():
 	print("SW ready start timestamp: " + str(SWUtils.get_timestamp()))
 	add_child(Auth)
 	add_child(Scores)
-	add_child(Players)
-	#Multiplayer.set_script(multiplayer_script)
+	add_child(PlayerData)
 	#add_child(Multiplayer)
 	print("SW ready end timestamp: " + str(SWUtils.get_timestamp()))
 
@@ -231,8 +231,8 @@ func check_scores_ready():
 		await get_tree().create_timer(0.01).timeout
 
 
-func check_players_ready():
-	if !Players:
+func check_player_data_ready():
+	if !PlayerData:
 		await get_tree().create_timer(0.01).timeout
 
 
@@ -242,5 +242,5 @@ func check_multiplayer_ready():
 
 
 func check_sw_ready():
-	if !Auth or !Scores or !Players or !Multiplayer:
+	if !Auth or !Scores or !PlayerData or !Multiplayer:
 		await get_tree().create_timer(0.01).timeout

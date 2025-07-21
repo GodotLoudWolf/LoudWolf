@@ -30,7 +30,6 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 # code instead to set the LoudWolf configuration.
 #
 # See https://loudwolf.angelator312.top for more details
-# See https://loudwolf.angelator312.top for more details
 #
 var config = {
 	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",

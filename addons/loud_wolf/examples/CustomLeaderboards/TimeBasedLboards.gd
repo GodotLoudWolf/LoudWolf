@@ -1,7 +1,7 @@
 extends Node2D
 
-const ScoreItem = preload("SmallScoreItem.tscn")
-const SWLogger = preload("../utils/SWLogger.gd")
+const ScoreItem = preload(LoudWolf.custom_leaderboards_example_path+ "SmallScoreItem.tscn")
+const SWLogger = preload(LoudWolf.utils_path +"SWLogger.gd")
 
 var ld_names = ["Weekly", "Monthly", "main"]
 

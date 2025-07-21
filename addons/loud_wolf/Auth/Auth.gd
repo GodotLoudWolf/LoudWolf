@@ -1,10 +1,10 @@
 extends Node
 class_name LoudWolfAuth
 
-const SWLocalFileStorage = preload("../utils/SWLocalFileStorage.gd")
-const SWUtils = preload("../utils/SWUtils.gd")
-const SWLogger = preload("../utils/SWLogger.gd")
-const UUID = preload("../utils/UUID.gd")
+const SWLocalFileStorage = preload(LoudWolf.utils_path+"SWLocalFileStorage.gd")
+const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
+const UUID = preload(LoudWolf.utils_path+"UUID.gd")
 
 signal sw_login_complete
 signal sw_logout_complete

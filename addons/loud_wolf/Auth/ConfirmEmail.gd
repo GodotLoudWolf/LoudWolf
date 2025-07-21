@@ -1,6 +1,6 @@
 extends TextureRect
 
-const SWLogger = preload("../utils/SWLogger.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 
 func _ready():

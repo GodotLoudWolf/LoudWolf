@@ -1,10 +1,10 @@
 extends Node
 class_name LoudWolfScores
 
-const SWLogger = preload("../utils/SWLogger.gd")
-const UUID = preload("../utils/UUID.gd")
-const SWHashing = preload("../utils/SWHashing.gd")
-const SWUtils = preload("../utils/SWUtils.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
+const UUID = preload(LoudWolf.utils_path+"UUID.gd")
+const SWHashing = preload(LoudWolf.utils_path+"SWHashing.gd")
+const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
 
 # new signals
 signal sw_get_scores_complete

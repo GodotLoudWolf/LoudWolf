@@ -1,8 +1,8 @@
 @tool
 extends Node2D
 
-const ScoreItem = preload("../../Scores/ScoreItem.tscn")
-const SWLogger = preload("../../utils/SWLogger.gd")
+const ScoreItem = preload(LoudWolf.scores_path+"ScoreItem.tscn")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 var list_index = 0
 var ld_name = "main"

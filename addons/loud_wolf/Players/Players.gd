@@ -1,8 +1,8 @@
 extends Node
 class_name LoudWolfPlayers
 
-const SWUtils = preload("../utils/SWUtils.gd")
-const SWLogger = preload("../utils/SWLogger.gd")
+const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
+const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 
 signal sw_save_player_data_complete
 signal sw_get_player_data_complete

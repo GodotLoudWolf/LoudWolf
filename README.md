@@ -16,4 +16,4 @@ You can optionally add email verification, password reset and much more.
 Use LoudWolf to persistently store, update and delete any kind of data (like inventory, stats, achievements, etc) about players or your game's overall state in minutes. Retrieve it in your game just as easily.
 
 ### We use the hosting of SilentWolf(new in progress) so please register at [link](http://silentwolf.com/auth)
-### The documentation is in [link](#TODO:Adddocs)
+### The documentation is in [link](https://loudwolf.angelator312.top/docs)

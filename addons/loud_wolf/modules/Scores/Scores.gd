@@ -96,7 +96,7 @@ func save_score(player_name: String, score, ldboard_name: String="main", metadat
 		SWLogger.debug("payload: " + str(payload))
 		# also add to local scores
 		add_to_local_scores(payload)
-		var request_url = "https://api.LoudWolf.com/save_score"
+		var request_url = LoudWolf.URLs.save_score
 		LoudWolf.send_post_request(SaveScore, request_url, payload)
 	return self
 
@@ -124,7 +124,7 @@ func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int
 	SWLogger.info("Calling LoudWolf backend to get scores...")
 	# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 	latest_max = maximum
-	var request_url = "https://api.LoudWolf.com/get_scores/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name) + "&period_offset=" + str(period_offset)
+	var request_url = LoudWolf.URLs.get_scores+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name) + "&period_offset=" + str(period_offset)
 	LoudWolf.send_get_request(GetScores, request_url)
 	return self
 
@@ -166,7 +166,7 @@ func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: St
 		SWLogger.info("Calling LoudWolf backend to get scores for player: " + str(player_name))
 		# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 		latest_max = maximum
-		var request_url = "https://api.LoudWolf.com/get_scores_by_player/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
+		var request_url = LoudWolf.URLs.get_scores_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(ScoresByPlayer, request_url)
 	return self
 
@@ -202,7 +202,7 @@ func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name:
 		SWLogger.info("Calling LoudWolf backend to get top score for player: " + str(player_name))
 		# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 		latest_max = maximum
-		var request_url = "https://api.LoudWolf.com/get_top_score_by_player/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
+		var request_url = LoudWolf.URLs.get_top_score_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(TopScoreByPlayer, request_url)
 	return self
 
@@ -247,7 +247,7 @@ func get_score_position(score, ldboard_name: String="main") -> Node:
 		payload["score_id"] = score_id
 	if score_value:
 		payload["score_value"] = score_value
-	var request_url = "https://api.LoudWolf.com/get_score_position"
+	var request_url = LoudWolf.URLs.get_score_position
 	LoudWolf.send_post_request(ScorePosition, request_url, payload)
 	return self
 
@@ -284,7 +284,7 @@ func get_scores_around(score, scores_to_fetch=3, ldboard_name: String="main") ->
 	SWLogger.info("Calling LoudWolf backend to scores above and below a certain score...")
 	# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 	#latest_max = maximum
-	var request_url = "https://api.LoudWolf.com/get_scores_around/" + str(LoudWolf.config.game_id) + "?scores_to_fetch=" + str(scores_to_fetch)  + "&ldboard_name=" + str(ldboard_name) + "&score_id=" + str(score_id) + "&score_value=" + str(score_value)
+	var request_url = LoudWolf.URLs.get_scores_around+"/" + str(LoudWolf.config.game_id) + "?scores_to_fetch=" + str(scores_to_fetch)  + "&ldboard_name=" + str(ldboard_name) + "&score_id=" + str(score_id) + "&score_value=" + str(score_value)
 	LoudWolf.send_get_request(ScoresAround, request_url)
 	return self
 
@@ -315,7 +315,7 @@ func delete_score(score_id: String, ldboard_name: String='main') -> Node:
 	wrDeleteScore = prepared_http_req.weakref
 	DeleteScore.request_completed.connect(_on_DeleteScore_request_completed)
 	SWLogger.info("Calling LoudWolf to delete a score")
-	var request_url = "https://api.LoudWolf.com/delete_score?game_id=" + str(LoudWolf.config.game_id) + "&ldboard_name=" + str(ldboard_name) + "&score_id=" + str(score_id)
+	var request_url = LoudWolf.URLs.delete_score+"?game_id=" + str(LoudWolf.config.game_id) + "&ldboard_name=" + str(ldboard_name) + "&score_id=" + str(score_id)
 	LoudWolf.send_get_request(DeleteScore, request_url)
 	return self
 
@@ -343,7 +343,7 @@ func wipe_leaderboard(ldboard_name: String='main') -> Node:
 	WipeLeaderboard.request_completed.connect(_on_WipeLeaderboard_request_completed)
 	SWLogger.info("Calling LoudWolf backend to wipe leaderboard...")
 	var payload = { "game_id": LoudWolf.config.game_id, "ldboard_name": ldboard_name }
-	var request_url = "https://api.LoudWolf.com/wipe_leaderboard"
+	var request_url = LoudWolf.URLs.wipe_leaderboard
 	LoudWolf.send_post_request(WipeLeaderboard, request_url, payload)
 	return self
 

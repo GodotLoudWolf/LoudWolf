@@ -33,7 +33,7 @@ func save_player_data(player_name: String, player_data: Dictionary, overwrite: b
 		SavePlayerData.request_completed.connect(_on_SavePlayerData_request_completed)
 		SWLogger.info("Calling LoudWolf to post player data")
 		var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name, "player_data": player_data, "overwrite": overwrite }
-		var request_url = "https://api.LoudWolf.com/push_player_data"
+		var request_url = LoudWolf.URLs.push_player_data
 		LoudWolf.send_post_request(SavePlayerData, request_url, payload)
 	return self
 
@@ -64,7 +64,7 @@ func get_player_data(player_name: String) -> Node:
 		wrGetPlayerData = prepared_http_req.weakref
 		GetPlayerData.request_completed.connect(_on_GetPlayerData_request_completed)
 		SWLogger.info("Calling LoudWolf to get player data")
-		var request_url = "https://api.LoudWolf.com/get_player_data/" + str(LoudWolf.config.game_id) + "/" + str(player_name)
+		var request_url = LoudWolf.URLs.get_player_data+"/" + str(LoudWolf.config.game_id) + "/" + str(player_name)
 		LoudWolf.send_get_request(GetPlayerData, request_url)
 	return self
 	
@@ -115,7 +115,7 @@ func delete_player_data(player_name: String, player_data: Dictionary) -> Node:
 	SWLogger.info("Calling LoudWolf to remove player data")
 	var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name, "player_data": player_data }
 	var query = JSON.stringify(payload)
-	var request_url = "https://api.LoudWolf.com/remove_player_data"
+	var request_url = LoudWolf.URLs.remove_player_data
 	LoudWolf.send_post_request(DeletePlayerData, request_url, payload)
 	return self
 

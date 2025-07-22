@@ -41,20 +41,21 @@ var config := {
 
 var scores_config :IScoresConfig= IScoresConfig.new("res://scenes/Splash.tscn")
 
-
 class IScoresConfig:
 	var open_scene_on_close:String
 	func _init(o_s_on_c:String):
 		open_scene_on_close=o_s_on_c
 
-var auth_config := {
-	"redirect_to_scene": "res://scenes/Splash.tscn",
-	"login_scene": auth_path+"Login.tscn",
-	"email_confirmation_scene": auth_path+"ConfirmEmail.tscn",
-	"reset_password_scene": auth_path+"ResetPassword.tscn",
-	"session_duration_seconds": 0,
-	"saved_session_expiration_days": 30
-}
+
+var auth_config := IAuthConfig.new()
+
+class IAuthConfig:
+	var redirect_to_scene:= "res://scenes/Splash.tscn"
+	var login_scene:= auth_path+"Login.tscn"
+	var email_confirmation_scene:= auth_path+"ConfirmEmail.tscn"
+	var reset_password_scene:= auth_path+"ResetPassword.tscn"
+	var session_duration_seconds:= 0
+	var saved_session_expiration_days:= 30
 
 
 func _init():

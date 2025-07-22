@@ -40,13 +40,13 @@ var scores_below  := []
 # latest number of scores to be fetched from the backend
 var latest_max = 10
 
-var SaveScore = null
+var SaveScore:HTTPRequest = null
 var GetScores = null
-var ScorePosition = null
+var ScorePosition:HTTPRequest = null
 var ScoresAround = null
 var ScoresByPlayer = null
 var TopScoreByPlayer = null
-var WipeLeaderboard = null
+var WipeLeaderboard :HTTPRequest= null
 var DeleteScore = null
 
 # wekrefs

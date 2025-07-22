@@ -58,7 +58,7 @@ func register_player_anon(player_name = null) -> Node:
 	RegisterPlayer.request_completed.connect(_on_RegisterPlayer_request_completed)
 	SWLogger.info("Calling LoudWolf to register an anonymous player")
 	var payload = { "game_id": LoudWolf.config.game_id, "anon": true, "player_name": player_name, "user_local_id": user_local_id }
-	var request_url = "https://api.LoudWolf.com/create_new_player"
+	var request_url =  LoudWolf.URLs.create_new_player
 	LoudWolf.send_post_request(RegisterPlayer, request_url, payload)
 	return self
 
@@ -71,7 +71,7 @@ func register_player(player_name: String, email: String, password: String, confi
 	RegisterPlayer.request_completed.connect(_on_RegisterPlayer_request_completed)
 	SWLogger.info("Calling LoudWolf to register a player")
 	var payload = { "game_id": LoudWolf.config.game_id, "anon": false, "player_name": player_name, "email":  email, "password": password, "confirm_password": confirm_password }
-	var request_url = "https://api.LoudWolf.com/create_new_player"
+	var request_url =  LoudWolf.URLs.create_new_player
 	LoudWolf.send_post_request(RegisterPlayer, request_url, payload)
 	return self
 
@@ -119,7 +119,7 @@ func register_player_user_password(player_name: String, password: String, confir
 	RegisterPlayer.request_completed.connect(_on_RegisterPlayerUserPassword_request_completed)
 	SWLogger.info("Calling LoudWolf to register a player")
 	var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name, "password": password, "confirm_password": confirm_password }
-	var request_url = "https://api.LoudWolf.com/create_new_player"
+	var request_url =  LoudWolf.URLs.create_new_player
 	LoudWolf.send_post_request(RegisterPlayer, request_url, payload)
 	return self
 
@@ -151,7 +151,7 @@ func verify_email(player_name: String, code: String) -> Node:
 	VerifyEmail.request_completed.connect(_on_VerifyEmail_request_completed)
 	SWLogger.info("Calling LoudWolf to verify email address for: " + str(player_name))
 	var payload = { "game_id": LoudWolf.config.game_id, "username":  player_name, "code": code }
-	var request_url = "https://api.LoudWolf.com/confirm_verif_code"
+	var request_url = LoudWolf.URLs.confirm_verification_code
 	LoudWolf.send_post_request(VerifyEmail, request_url, payload)
 	return self
 
@@ -181,7 +181,7 @@ func resend_conf_code(player_name: String) -> Node:
 	ResendConfCode.request_completed.connect(_on_ResendConfCode_request_completed)
 	SWLogger.info("Calling LoudWolf to resend confirmation code for: " + str(player_name))
 	var payload = { "game_id": LoudWolf.config.game_id, "username": player_name }
-	var request_url = "https://api.LoudWolf.com/resend_conf_code"
+	var request_url = LoudWolf.URLs.resend_confirmation_code
 	LoudWolf.send_post_request(ResendConfCode, request_url, payload)
 	return self
 
@@ -218,7 +218,7 @@ func login_player(username: String, password: String, remember_me:bool=false) ->
 	print("obfuscated password: " + str(obfuscated_password))
 	payload_for_logging["password"] = obfuscated_password
 	SWLogger.debug("LoudWolf login player payload: " + str(payload_for_logging))
-	var request_url = "https://api.LoudWolf.com/login_player"
+	var request_url = LoudWolf.URLs.login_player
 	LoudWolf.send_post_request(LoginPlayer, request_url, payload)
 	return self
 
@@ -266,7 +266,7 @@ func request_player_password_reset(player_name: String) -> Node:
 	SWLogger.info("Calling LoudWolf to request a password reset for: " + str(player_name))
 	var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name }
 	SWLogger.debug("LoudWolf request player password reset payload: " + str(payload))
-	var request_url = "https://api.LoudWolf.com/request_player_password_reset"
+	var request_url = LoudWolf.URLs.request_player_password_reset
 	LoudWolf.send_post_request(RequestPasswordReset, request_url, payload)
 	return self
 
@@ -294,7 +294,7 @@ func reset_player_password(player_name: String, conf_code: String, new_password:
 	SWLogger.info("Calling LoudWolf to reset password for: " + str(player_name))
 	var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name, "conf_code": conf_code, "password": new_password, "confirm_password": confirm_password }
 	SWLogger.debug("LoudWolf request player password reset payload: " + str(payload))
-	var request_url = "https://api.LoudWolf.com/reset_player_password"
+	var request_url = LoudWolf.URLs.reset_player_password
 	LoudWolf.send_post_request(ResetPassword, request_url, payload)
 	return self
 
@@ -320,7 +320,7 @@ func get_player_details(player_name: String) -> Node:
 	GetPlayerDetails.request_completed.connect(_on_GetPlayerDetails_request_completed)
 	SWLogger.info("Calling LoudWolf to get player details")
 	var payload = { "game_id": LoudWolf.config.game_id, "player_name": player_name }
-	var request_url = "https://api.LoudWolf.com/get_player_details"
+	var request_url =LoudWolf.URLs.get_player_details
 	LoudWolf.send_post_request(GetPlayerDetails, request_url, payload)
 	return self
 
@@ -348,7 +348,7 @@ func validate_player_session(lookup: String, validator: String, scene: Node=get_
 	SWLogger.info("Calling LoudWolf to validate an existing player session")
 	var payload = { "game_id": LoudWolf.config.game_id, "lookup": lookup, "validator": validator }
 	SWLogger.debug("Validate session payload: " + str(payload))
-	var request_url = "https://api.LoudWolf.com/validate_remember_me"
+	var request_url = LoudWolf.URLs.validate_remember_me
 	LoudWolf.send_post_request(ValidateSession, request_url, payload)
 	return self
 

@@ -35,12 +35,17 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 var config := {
 	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",
 	"game_id": "YOURGAMEID",
+	"version":"0.0.1",
 	"log_level": 0
 }
 
-var scores_config :Dictionary= {
-	"open_scene_on_close": "res://scenes/Splash.tscn"
-}
+var scores_config :IScoresConfig= IScoresConfig.new("res://scenes/Splash.tscn")
+
+
+class IScoresConfig:
+	var open_scene_on_close:String
+	func _init(o_s_on_c:String):
+		open_scene_on_close=o_s_on_c
 
 var auth_config := {
 	"redirect_to_scene": "res://scenes/Splash.tscn",
@@ -136,7 +141,7 @@ func prepare_http_request() -> IPrepareHTTPRequest:
 	return return_dict
 
 
-func send_get_request(http_node: HTTPRequest, request_url: String):
+func send_get_request(http_node: HTTPRequest, request_url: String)->void:
 	var headers = [
 		"x-api-key: " + LoudWolf.config.api_key, 
 		"x-sw-game-id: " + LoudWolf.config.game_id,
@@ -153,7 +158,8 @@ func send_get_request(http_node: HTTPRequest, request_url: String):
 	http_node.request(request_url, headers) 
 
 
-func send_post_request(http_node, request_url, payload):
+func send_post_request(http_node, request_url, payload) -> void:
+	## Declare HTTP Headers
 	var headers = [
 		"Content-Type: application/json", 
 		"x-api-key: " + LoudWolf.config.api_key, 
@@ -198,7 +204,7 @@ func send_post_request(http_node, request_url, payload):
 	SWLogger.debug("query: " + str(query))
 	http_node.request(request_url, headers, HTTPClient.METHOD_POST, query)
 
-
+## Appends headers for Auth.sw_id_token and Auth.sw_access_token
 func add_jwt_token_headers(headers: Array) -> Array:
 	if Auth.sw_id_token != null:
 		headers.append("x-sw-id-token: " + Auth.sw_id_token)
@@ -206,7 +212,7 @@ func add_jwt_token_headers(headers: Array) -> Array:
 		headers.append("x-sw-access-token: " + Auth.sw_access_token)
 	return headers
 
-
+## Check is the @param test_string in @param url
 func check_string_in_url(test_string: String, url: String) -> bool:
 	return test_string in url
 
@@ -223,7 +229,7 @@ func build_result(body: Dictionary) -> Dictionary:
 		"error": error
 	}
 
-
+## Awaits for Auth to exist 
 func check_auth_ready():
 	if !Auth:
 		await get_tree().create_timer(0.01).timeout
@@ -244,6 +250,7 @@ func check_multiplayer_ready():
 		await get_tree().create_timer(0.01).timeout
 
 
+## Awaits for all modules to exist 
 func check_sw_ready():
 	if !Auth or !Scores or !PlayerData or !Multiplayer:
 		await get_tree().create_timer(0.01).timeout

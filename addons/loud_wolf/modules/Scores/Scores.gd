@@ -107,7 +107,7 @@ func _on_SaveScore_request_completed(result, response_code, headers, body) -> vo
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf save score success.")
 			sw_result["score_id"] = json_body.score_id
@@ -135,7 +135,7 @@ func _on_GetScores_request_completed(result, response_code, headers, body) -> vo
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get scores success, found " + str(json_body.top_scores.size()) + " scores.")
 			scores = translate_score_fields_in_array(json_body.top_scores)
@@ -177,7 +177,7 @@ func _on_GetScoresByPlayer_request_completed(result, response_code, headers, bod
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get scores by player success, found " + str(json_body.top_scores.size()) + " scores.")
 			player_scores = translate_score_fields_in_array(json_body.top_scores)
@@ -213,7 +213,7 @@ func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, b
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get top score by player success, found top score? " + str(!json_body.top_score.is_empty()))
 			if !json_body.top_score.is_empty():
@@ -258,7 +258,7 @@ func _on_GetScorePosition_request_completed(result, response_code, headers, body
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get score position success: " + str(json_body.position))
 			sw_result["position"] =  int(json_body.position)
@@ -296,7 +296,7 @@ func _on_ScoresAround_request_completed(result, response_code, headers, body) ->
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get scores around success.")
 			sw_result["scores_above"] = translate_score_fields_in_array(json_body.scores_above)
@@ -326,7 +326,7 @@ func _on_DeleteScore_request_completed(result, response_code, headers, body) -> 
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf delete score success")
 		else:
@@ -354,7 +354,7 @@ func _on_WipeLeaderboard_request_completed(result, response_code, headers, body)
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf wipe leaderboard success.")
 		else:

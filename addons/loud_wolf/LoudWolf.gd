@@ -226,17 +226,18 @@ func check_string_in_url(test_string: String, url: String) -> bool:
 	return test_string in url
 
 
-func build_result(body: Dictionary) -> Dictionary:
-	var error = null
-	var success = false
+func build_result(body: Dictionary) -> IBuildResult:
+	var res=IBuildResult.new()
 	if "error" in body:
-		error = body.error
+		res.error = body.error
 	if "success" in body:
-		success = body.success
-	return {
-		"success": success,
-		"error": error
-	}
+		res.success = body.success
+	return res
+
+class IBuildResult:
+	var error
+	var success
+
 
 ## Awaits for Auth to exist 
 func check_auth_ready():

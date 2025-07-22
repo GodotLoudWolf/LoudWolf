@@ -1,7 +1,6 @@
 extends Node
 class_name LoudWolfAutoload
 
-const version := "0.0.1"
 var godot_version :String= Engine.get_version_info().string
 #Paths:
 const plugin_path:="res://addons/loud_wolf/"
@@ -32,13 +31,10 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 #
 # See https://loudwolf.angelator312.top/docs/game_config for more details
 #
-var config := IGameConfig.new()
-
-class IGameConfig:
-	var api_key:="FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY"
-	var game_id:="YOURGAMEID"
-	var version:="0.0.1"
-	var log_level:=LogLevels.Info
+var api_key:="FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY"
+var game_id:="YOURGAMEID"
+var version:="0.0.1"
+var log_level:=LogLevels.Info
 
 
 var scores_config :IScoresConfig= IScoresConfig.new("res://scenes/Splash.tscn")
@@ -74,36 +70,24 @@ func _ready():
 	#add_child(Multiplayer)
 	print("SW ready end timestamp: " + str(SWUtils.get_timestamp()))
 
-## @deprecated use configure_api_key, configure_game_id, configure_log_level
-func configure(json_config:IGameConfig):
-	config = json_config
-
-
-func configure_api_key(api_key:String):
-	config.api_key = api_key
-
-
-func configure_game_id(game_id:String):
-	config.game_id = game_id
-
-
-func configure_game_version(game_version:String):
-	config.game_version = game_version
+func configure(api_key:String, game_id:String, version:String, log_level:LogLevels):
+	self.api_key = api_key
+	self.game_id = game_id
+	self.version = version
+	self.log_level = log_level
 
 
 ##################################################################
 # Log levels:
 ##################################################################
 enum LogLevels{
-	## only log errors
+	# only log errors
 	Error=0,
 	# log errors and the main actions taken by the LoudWolf plugin - default setting
 	Info=1,
 	# detailed logs, including the above and much more, to be used when investigating a problem. This shouldn't be the default setting in production.
 	Debug=2
 }
-func configure_log_level(log_level:LogLevels):
-	config.log_level = log_level
 
 
 func configure_scores(json_scores_config:IScoresConfig):
@@ -151,9 +135,9 @@ func prepare_http_request() -> IPrepareHTTPRequest:
 
 func send_get_request(http_node: HTTPRequest, request_url: String)->void:
 	var headers:Array[String] = [
-		"x-api-key: " + LoudWolf.config.api_key, 
-		"x-sw-game-id: " + LoudWolf.config.game_id,
-		"x-sw-plugin-version: " + LoudWolf.version,
+		"x-api-key: " + api_key, 
+		"x-sw-game-id: " + game_id,
+		"x-sw-plugin-version: " + version,
 		"x-sw-godot-version: " + godot_version 
 	]
 	headers = add_jwt_token_headers(headers)
@@ -170,9 +154,9 @@ func send_post_request(http_node:HTTPRequest, request_url:String, payload) -> vo
 	## Declare HTTP Headers, every element is stringified header 
 	var headers :Array[String]= [
 		"Content-Type: application/json", 
-		"x-api-key: " + LoudWolf.config.api_key, 
-		"x-sw-game-id: " + LoudWolf.config.game_id,
-		"x-sw-plugin-version: " + LoudWolf.version,
+		"x-api-key: " + api_key, 
+		"x-sw-game-id: " + game_id,
+		"x-sw-plugin-version: " + version,
 		"x-sw-godot-version: " + godot_version 
 	]
 	headers = add_jwt_token_headers(headers)

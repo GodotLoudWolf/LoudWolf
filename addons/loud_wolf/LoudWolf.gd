@@ -24,20 +24,21 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 @onready var Multiplayer := LoudWolfMultiplayer.new()
 
 #
-# LoudWolf CONFIG: THE CONFIG VARIABLES BELOW WILL BE OVERRIDED THE 
+# LoudWolf config: THE CONFIG VARIABLES BELOW WILL BE OVERRIDED THE 
 # NEXT TIME YOU UPDATE YOUR PLUGIN!
 #
-# As a best practice, use LoudWolf.configure from your game's
-# code instead to set the LoudWolf configuration.
+# As a best practice, use LoudWolf.configure functions from your game's code instead to set the LoudWolf configuration.
 #
-# See https://loudwolf.angelator312.top/docs/configs for more details
+# See https://loudwolf.angelator312.top/docs/game_config for more details
 #
-var config := {
-	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",
-	"game_id": "YOURGAMEID",
-	"version":"0.0.1",
-	"log_level": 0
-}
+var config := IGameConfig.new()
+
+class IGameConfig:
+	var api_key:="FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY"
+	var game_id:="YOURGAMEID"
+	var version:="0.0.1"
+	var log_level:=LogLevels.Info
+
 
 var scores_config :IScoresConfig= IScoresConfig.new("res://scenes/Splash.tscn")
 
@@ -91,15 +92,20 @@ func configure_game_version(game_version):
 
 ##################################################################
 # Log levels:
-# 0 - error (only log errors)
-# 1 - info (log errors and the main actions taken by the LoudWolf plugin) - default setting
-# 2 - debug (detailed logs, including the above and much more, to be used when investigating a problem). This shouldn't be the default setting in production.
 ##################################################################
-func configure_log_level(log_level):
+enum LogLevels{
+	## only log errors
+	Error=0,
+	# log errors and the main actions taken by the LoudWolf plugin - default setting
+	Info=1,
+	# detailed logs, including the above and much more, to be used when investigating a problem. This shouldn't be the default setting in production.
+	Debug=2
+}
+func configure_log_level(log_level:LogLevels):
 	config.log_level = log_level
 
 
-func configure_scores(json_scores_config):
+func configure_scores(json_scores_config:IScoresConfig):
 	scores_config = json_scores_config
 
 
@@ -107,7 +113,7 @@ func configure_scores_open_scene_on_close(scene):
 	scores_config.open_scene_on_close = scene
 
 ## @deprecated use configure_auth_ functions
-func configure_auth(json_auth_config):
+func configure_auth(json_auth_config:IAuthConfig):
 	auth_config = json_auth_config
 
 

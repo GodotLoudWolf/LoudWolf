@@ -110,13 +110,13 @@ func _on_SaveScore_request_completed(result: int, response_code: int, headers: P
 		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf save score success.")
-			sw_result["score_id"] = json_body.score_id
+			sw_result.score_id = json_body.score_id
 		else:
 			SWLogger.error("LoudWolf save score failure: " + str(json_body.error))
 		sw_save_score_complete.emit(sw_result)
 
 
-func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
+func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> LoudWolfScores:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	GetScores = prepared_http_req.request
 	wrGetScores = prepared_http_req.weakref
@@ -148,8 +148,8 @@ func _on_GetScores_request_completed(result, response_code, headers, body) -> vo
 			else:
 				leaderboards[ld_name] = scores
 			ldboard_config[ld_name] = ld_config
-			sw_result["scores"] = scores
-			sw_result["ld_name"] = ld_name
+			sw_result.scores = scores
+			sw_result.ld_name = ld_name
 		else:
 			SWLogger.error("LoudWolf get scores failure: " + str(json_body.error))
 		sw_get_scores_complete.emit(sw_result)
@@ -185,10 +185,10 @@ func _on_GetScoresByPlayer_request_completed(result, response_code, headers, bod
 			var ld_name = json_body.ld_name
 			var ld_config = json_body.ld_config
 			var player_name = json_body.player_name
-			sw_result["scores"] = player_scores
+			sw_result.scores = player_scores
 		else:
 			SWLogger.error("LoudWolf get scores by player failure: " + str(json_body.error))
-		sw_get_player_scores_complete.emit(sw_result)	
+		sw_get_player_scores_complete.emit(sw_result)
 
 
 func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
@@ -222,10 +222,10 @@ func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, b
 				var ld_name = json_body.ld_name
 				var ld_config = json_body.ld_config
 				var player_name = json_body.player_name
-				sw_result["top_score"] = player_top_score
+				sw_result.top_score = player_top_score
 		else:
 			SWLogger.error("LoudWolf get top score by player failure: " + str(json_body.error))
-		sw_top_player_score_complete.emit(sw_result)	
+		sw_top_player_score_complete.emit(sw_result)
 
 
 # The score attribute could be either a score_value (int) or score_id (Sstring)
@@ -261,7 +261,7 @@ func _on_GetScorePosition_request_completed(result, response_code, headers, body
 		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get score position success: " + str(json_body.position))
-			sw_result["position"] =  int(json_body.position)
+			sw_result.position =  int(json_body.position)
 		else:
 			SWLogger.error("LoudWolf get score position failure: " + str(json_body.error))
 		sw_get_position_complete.emit(sw_result)
@@ -299,10 +299,10 @@ func _on_ScoresAround_request_completed(result, response_code, headers, body) ->
 		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get scores around success.")
-			sw_result["scores_above"] = translate_score_fields_in_array(json_body.scores_above)
-			sw_result["scores_below"] = translate_score_fields_in_array(json_body.scores_below)
+			sw_result.scores_above = translate_score_fields_in_array(json_body.scores_above)
+			sw_result.scores_below = translate_score_fields_in_array(json_body.scores_below)
 			if "score_position" in json_body:
-				sw_result["position"] = json_body.score_position
+				sw_result.position = json_body.score_position
 		else:
 			SWLogger.error("LoudWolf get scores around failure: " + str(json_body.error))
 		sw_get_scores_around_complete.emit(sw_result)
@@ -368,8 +368,8 @@ func add_to_local_scores(game_result: Dictionary, ld_name: String="main") -> voi
 	SWLogger.debug("local scores: " + str(local_scores))
 
 
-func translate_score_fields_in_array(scores: Array) -> Array:
-	var translated_scores = []
+func translate_score_fields_in_array(scores: Array) -> Array[Dictionary]:
+	var translated_scores:Array[Dictionary] = []
 	for score in scores:
 		var new_score = translate_score_fields(score)
 		translated_scores.append(new_score)

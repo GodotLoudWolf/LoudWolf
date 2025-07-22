@@ -82,7 +82,7 @@ func _on_GetPlayerData_request_completed(result, response_code, headers, body) -
 			player_name = json_body.player_name
 			player_data = json_body.player_data
 			SWLogger.debug("Player data: " + str(player_data))
-			sw_result["player_data"] = player_data
+			sw_result.player_data = player_data
 		else:
 			SWLogger.error("LoudWolf get player data failure: " + str(json_body.error))
 		sw_get_player_data_complete.emit(sw_result)
@@ -133,8 +133,8 @@ func _on_DeletePlayerData_request_completed(result, response_code, headers, body
 			var player_name = json_body.player_name
 			# return player_data after (maybe partial) removal
 			var player_data = json_body.player_data
-			sw_result["player_name"] = player_name
-			sw_result["player_data"] = player_data
+			sw_result.player_name = player_name
+			sw_result.player_data = player_data
 		else:
 			SWLogger.error("LoudWolf delete player data failure: " + str(json_body.error))
 		sw_delete_player_data_complete.emit(sw_result)

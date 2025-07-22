@@ -13,6 +13,7 @@ const examples_path:=plugin_path+"examples/"
 
 #Example paths
 const custom_leaderboards_example_path:=examples_path+"CustomLeaderboards/"
+var URLs=LoudWolfURLs.new()
 
 const SWUtils := preload(LoudWolf.utils_path+"SWUtils.gd")
 const SWHashing := preload(LoudWolf.utils_path+"SWHashing.gd")

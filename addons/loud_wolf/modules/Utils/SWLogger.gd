@@ -3,12 +3,7 @@ extends Node
 const SWUtils = preload(LoudWolf.utils_path+"SWUtils.gd")
 
 static func get_log_level():
-	var log_level = 1
-	if LoudWolf.config.has('log_level'):
-		log_level = LoudWolf.config.log_level
-	else:
-		error("Couldn't find LoudWolf.config.log_level, defaulting to 1") 
-	return log_level
+	return LoudWolf.config.log_level 
 	
 static func error(text):
 	printerr(str(text))

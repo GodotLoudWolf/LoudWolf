@@ -80,7 +80,7 @@ func configure(json_config:IGameConfig):
 
 
 func configure_api_key(api_key:String):
-	config.apiKey = api_key
+	config.api_key = api_key
 
 
 func configure_game_id(game_id:String):
@@ -238,6 +238,15 @@ func build_result(body: Dictionary) -> IBuildResult:
 class IBuildResult:
 	var error
 	var success
+	var player_data
+	var player_name
+	var score_id:String
+	var ld_name:String
+	var scores:Array
+	var top_score
+	var position
+	var scores_below
+	var scores_above
 
 
 ## Awaits for Auth to exist 

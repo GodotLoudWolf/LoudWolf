@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhd6pw3c7d1ih"]
+
+[ext_resource type="Script" uid="uid://cl5qs8d2stli5" path="res://docsExamples/tutorials/GetStarted/AddLeaderboard/score_item.gd" id="1_ll6nj"]
+
+[node name="ScoreItem" type="HBoxContainer"]
+offset_right = 11.0
+offset_bottom = 23.0
+script = ExtResource("1_ll6nj")
+
+[node name="Order" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 2

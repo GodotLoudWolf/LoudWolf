@@ -12,7 +12,7 @@ signal sw_get_player_scores_complete
 signal sw_top_player_score_complete
 signal sw_get_position_complete
 signal sw_get_scores_around_complete
-signal sw_save_score_complete
+signal sw_save_score_complete(a:LoudWolf.IBuildResult)
 signal sw_wipe_leaderboard_complete
 signal sw_delete_score_complete
 
@@ -24,7 +24,7 @@ var leaderboards_past_periods := {}
 var ldboard_config := {}
 
 # contains only the scores from one leaderboard at a time
-var scores := []
+var scores :Array[Dictionary]= []
 var player_scores := []
 var player_top_score = null
 var local_scores := []
@@ -62,7 +62,7 @@ var wrDeleteScore = null
 
 # metadata, if included should be a dictionary
 # The score attribute could be either a score_value (int) or score_id (String)
-func save_score(player_name: String, score, ldboard_name: String="main", metadata: Dictionary={}) -> Node:
+func save_score(player_name: String, score, ldboard_name: String="main", metadata: Dictionary={}) -> LoudWolfScores:
 	# player_name must be present
 	if player_name == null or player_name == "":
 		SWLogger.error("ERROR in LoudWolf.Scores.persist_score - please enter a valid player name")
@@ -101,7 +101,7 @@ func save_score(player_name: String, score, ldboard_name: String="main", metadat
 	return self
 
 
-func _on_SaveScore_request_completed(result, response_code, headers, body) -> void:
+func _on_SaveScore_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
 	LoudWolf.free_request(wrSaveScore, SaveScore)
 	

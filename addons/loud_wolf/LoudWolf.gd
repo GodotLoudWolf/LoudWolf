@@ -74,19 +74,19 @@ func _ready():
 	print("SW ready end timestamp: " + str(SWUtils.get_timestamp()))
 
 ## @deprecated use configure_api_key, configure_game_id, configure_log_level
-func configure(json_config):
+func configure(json_config:IGameConfig):
 	config = json_config
 
 
-func configure_api_key(api_key):
+func configure_api_key(api_key:String):
 	config.apiKey = api_key
 
 
-func configure_game_id(game_id):
+func configure_game_id(game_id:String):
 	config.game_id = game_id
 
 
-func configure_game_version(game_version):
+func configure_game_version(game_version:String):
 	config.game_version = game_version
 
 
@@ -149,7 +149,7 @@ func prepare_http_request() -> IPrepareHTTPRequest:
 
 
 func send_get_request(http_node: HTTPRequest, request_url: String)->void:
-	var headers = [
+	var headers:Array[String] = [
 		"x-api-key: " + LoudWolf.config.api_key, 
 		"x-sw-game-id: " + LoudWolf.config.game_id,
 		"x-sw-plugin-version: " + LoudWolf.version,
@@ -214,7 +214,7 @@ func send_post_request(http_node:HTTPRequest, request_url:String, payload) -> vo
 	http_node.request(request_url, headers, HTTPClient.METHOD_POST, query)
 
 ## Appends headers for Auth.sw_id_token and Auth.sw_access_token
-func add_jwt_token_headers(headers: Array) -> Array:
+func add_jwt_token_headers(headers: Array[String]) -> Array[String]:
 	if Auth.sw_id_token != null:
 		headers.append("x-sw-id-token: " + Auth.sw_id_token)
 	if Auth.sw_access_token != null:

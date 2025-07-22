@@ -24,14 +24,15 @@ var logged_in_anon = false
 var sw_access_token = null
 var sw_id_token = null
 
-var RegisterPlayer = null
-var VerifyEmail = null
-var ResendConfCode = null
-var LoginPlayer = null
-var ValidateSession = null
-var RequestPasswordReset = null
-var ResetPassword = null
-var GetPlayerDetails = null
+#HTTP Request Nodes:
+var RegisterPlayer:HTTPRequest = null
+var VerifyEmail:HTTPRequest = null
+var ResendConfCode:HTTPRequest = null
+var LoginPlayer :HTTPRequest= null
+var ValidateSession:HTTPRequest = null
+var RequestPasswordReset:HTTPRequest = null
+var ResetPassword:HTTPRequest = null
+var GetPlayerDetails:HTTPRequest = null
 
 # wekrefs
 var wrRegisterPlayer = null

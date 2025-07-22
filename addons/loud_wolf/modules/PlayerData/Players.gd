@@ -9,8 +9,8 @@ signal sw_get_player_data_complete
 signal sw_delete_player_data_complete
 
 var GetPlayerData = null
-var SavePlayerData = null
-var DeletePlayerData = null
+var SavePlayerData:HTTPRequest = null
+var DeletePlayerData:HTTPRequest = null
 
 # wekrefs
 var wrGetPlayerData = null

@@ -109,7 +109,7 @@ func configure_scores(json_scores_config:IScoresConfig):
 	scores_config = json_scores_config
 
 
-func configure_scores_open_scene_on_close(scene):
+func configure_scores_open_scene_on_close(scene:String):
 	scores_config.open_scene_on_close = scene
 
 ## @deprecated use configure_auth_ functions
@@ -165,7 +165,7 @@ func send_get_request(http_node: HTTPRequest, request_url: String)->void:
 	http_node.request(request_url, headers) 
 
 
-func send_post_request(http_node, request_url, payload) -> void:
+func send_post_request(http_node:HTTPRequest, request_url:String, payload) -> void:
 	## Declare HTTP Headers
 	var headers = [
 		"Content-Type: application/json", 
@@ -182,6 +182,7 @@ func send_post_request(http_node, request_url, payload) -> void:
 		"save_score": ["player_name", "score"],
 		"push_player_data": ["player_name", "player_data"]
 	}
+	## Made headers
 	for path in paths_with_values_to_hash:
 		var values_to_hash = []
 		if check_string_in_url(path, request_url):
@@ -192,7 +193,7 @@ func send_post_request(http_node, request_url, payload) -> void:
 				# if the data is a dictionary (e.g. player data, stringify it before hashing)
 				if typeof(payload[field]) == TYPE_DICTIONARY:
 					value = JSON.stringify(payload[field])
-				values_to_hash = values_to_hash + [value]
+				values_to_hash.append_array([value])
 			var timestamp = SWUtils.get_timestamp()
 			values_to_hash = values_to_hash + [timestamp]
 			SWLogger.debug(str(path) + " to_be_hashed: " + str(values_to_hash))
@@ -209,6 +210,7 @@ func send_post_request(http_node, request_url, payload) -> void:
 	SWLogger.debug("request_url: " + str(request_url))
 	SWLogger.debug("headers: " + str(headers))
 	SWLogger.debug("query: " + str(query))
+	## Send to request_url the headers and query
 	http_node.request(request_url, headers, HTTPClient.METHOD_POST, query)
 
 ## Appends headers for Auth.sw_id_token and Auth.sw_access_token

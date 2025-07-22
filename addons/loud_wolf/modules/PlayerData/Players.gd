@@ -45,7 +45,7 @@ func _on_SavePlayerData_request_completed(result, response_code, headers, body) 
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf save player data success for player: " + str(json_body.player_name))
 			var player_name = json_body.player_name
@@ -76,7 +76,7 @@ func _on_GetPlayerData_request_completed(result, response_code, headers, body) -
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get player data success for player: " + str(json_body.player_name))
 			player_name = json_body.player_name
@@ -127,7 +127,7 @@ func _on_DeletePlayerData_request_completed(result, response_code, headers, body
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf delete player data success for player: " + str(json_body.player_name))
 			var player_name = json_body.player_name

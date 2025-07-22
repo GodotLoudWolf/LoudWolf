@@ -84,7 +84,7 @@ func _on_RegisterPlayer_request_completed(result, response_code, headers, body) 
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
 		# also get a JWT token here, when available in backend
 		# send a different signal depending on registration success or failure
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf register player success, player_name: " + str(json_body.player_name))
 			#sw_token = json_body.swtoken
@@ -133,7 +133,7 @@ func _on_RegisterPlayerUserPassword_request_completed(result, response_code, hea
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
 		# also get a JWT token here
 		# send a different signal depending on registration success or failure
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			# if email confirmation is enabled for the game, we can't log in the player just yet
 			var email_conf_enabled = json_body.email_conf_enabled
@@ -165,7 +165,7 @@ func _on_VerifyEmail_request_completed(result, response_code, headers, body) -> 
 		SWLogger.info("LoudWolf verify email success? : " + str(json_body.success))
 		# also get a JWT token here
 		# send a different signal depending on registration success or failure
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf email verification success.")
 			logged_in_player  = tmp_username
@@ -195,7 +195,7 @@ func _on_ResendConfCode_request_completed(result, response_code, headers, body) 
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
 		# also get a JWT token here
 		# send a different signal depending on registration success or failure
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf resend conf code success.")
 		else:
@@ -235,7 +235,7 @@ func _on_LoginPlayer_request_completed(result, response_code, headers, body) -> 
 		if "validator" in json_body.keys():
 			SWLogger.debug("remember me validator: " + str(json_body.validator))
 		# send a different signal depending on login success or failure
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf resend conf code success.")
 			sw_access_token = json_body.swtoken
@@ -278,7 +278,7 @@ func _on_RequestPasswordReset_request_completed(result, response_code, headers, 
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf request player password reset success.")
 		else:
@@ -305,7 +305,7 @@ func _on_ResetPassword_completed(result, response_code, headers, body) -> void:
 
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf reset player password success.")
 		else:
@@ -331,7 +331,7 @@ func _on_GetPlayerDetails_request_completed(result, response_code, headers, body
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf get player details success: " + str(json_body.player_details))
 			sw_result["player_details"] = json_body.player_details
@@ -359,7 +359,7 @@ func _on_ValidateSession_request_completed(result, response_code, headers, body)
 	
 	if status_check:
 		var json_body = JSON.parse_string(body.get_string_from_utf8())
-		var sw_result: Dictionary = LoudWolf.build_result(json_body)
+		var sw_result: LoudWolf.IBuildResult = LoudWolf.build_result(json_body)
 		if json_body.success:
 			SWLogger.info("LoudWolf validate session success.")	
 			set_player_logged_in(json_body.player_name)

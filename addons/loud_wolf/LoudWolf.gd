@@ -6,7 +6,7 @@ var godot_version :String= Engine.get_version_info().string
 #Paths:
 const plugin_path:="res://addons/loud_wolf/"
 const modules_path:=plugin_path+"modules/"
-const utils_path:=plugin_path+"utils/"
+const utils_path:=modules_path+"Utils/"
 const scores_path:=modules_path+"Scores/"
 const auth_path:=modules_path+"Auth/"
 const examples_path:=plugin_path+"examples/"

@@ -30,9 +30,9 @@ const SWLogger := preload(LoudWolf.utils_path+"SWLogger.gd")
 # As a best practice, use LoudWolf.configure from your game's
 # code instead to set the LoudWolf configuration.
 #
-# See https://loudwolf.angelator312.top for more details
+# See https://loudwolf.angelator312.top/docs/configs for more details
 #
-var config = {
+var config := {
 	"api_key": "FmKF4gtm0Z2RbUAEU62kZ2OZoYLj4PYOURAPIKEY",
 	"game_id": "YOURGAMEID",
 	"log_level": 0
@@ -42,7 +42,7 @@ var scores_config :Dictionary= {
 	"open_scene_on_close": "res://scenes/Splash.tscn"
 }
 
-var auth_config = {
+var auth_config := {
 	"redirect_to_scene": "res://scenes/Splash.tscn",
 	"login_scene": auth_path+"Login.tscn",
 	"email_confirmation_scene": auth_path+"ConfirmEmail.tscn",
@@ -66,7 +66,7 @@ func _ready():
 	#add_child(Multiplayer)
 	print("SW ready end timestamp: " + str(SWUtils.get_timestamp()))
 
-
+## @deprecated use configure_api_key, configure_game_id, configure_log_level
 func configure(json_config):
 	config = json_config
 
@@ -100,7 +100,7 @@ func configure_scores(json_scores_config):
 func configure_scores_open_scene_on_close(scene):
 	scores_config.open_scene_on_close = scene
 
-
+## @deprecated use configure_auth_ functions
 func configure_auth(json_auth_config):
 	auth_config = json_auth_config
 
@@ -118,17 +118,21 @@ func free_request(weak_ref, object):
 		object.queue_free()
 
 
-func prepare_http_request() -> Dictionary:
-	var request = HTTPRequest.new()
-	var weakref = weakref(request)
+class IPrepareHTTPRequest:
+	var request:HTTPRequest
+	var weakref
+	func _init(r:HTTPRequest,wr):
+		request=r
+		weakref=wr
+
+func prepare_http_request() -> IPrepareHTTPRequest:
+	var request := HTTPRequest.new()
+	var weakref := weakref(request)
 	if OS.get_name() != "Web":
 		request.set_use_threads(true)
 	request.process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().get_root().call_deferred("add_child", request)
-	var return_dict = {
-		"request": request, 
-		"weakref": weakref
-	}
+	var return_dict = IPrepareHTTPRequest.new(request, weakref)
 	return return_dict
 
 

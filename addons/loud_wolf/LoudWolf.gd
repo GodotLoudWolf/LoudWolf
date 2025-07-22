@@ -166,8 +166,8 @@ func send_get_request(http_node: HTTPRequest, request_url: String)->void:
 
 
 func send_post_request(http_node:HTTPRequest, request_url:String, payload) -> void:
-	## Declare HTTP Headers
-	var headers = [
+	## Declare HTTP Headers, every element is stringified header 
+	var headers :Array[String]= [
 		"Content-Type: application/json", 
 		"x-api-key: " + LoudWolf.config.api_key, 
 		"x-sw-game-id: " + LoudWolf.config.game_id,

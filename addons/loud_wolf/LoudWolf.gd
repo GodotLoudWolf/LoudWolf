@@ -74,9 +74,11 @@ func _ready():
 	#add_child(Multiplayer)
 	print("SW ready end timestamp: " + str(SWUtils.get_timestamp()))
 
-## @deprecated use configure_api_key, configure_game_id, configure_log_level
-func configure(json_config:IGameConfig):
-	config = json_config
+func configure(api_key:String, game_id:String, version:String, log_level:LogLevels):
+	config.api_key=api_key
+	config.game_id=game_id
+	config.version=version
+	config.log_level=log_level
 
 
 func configure_api_key(api_key:String):

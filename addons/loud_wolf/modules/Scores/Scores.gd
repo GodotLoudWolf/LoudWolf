@@ -62,7 +62,7 @@ var wrDeleteScore = null
 
 # metadata, if included should be a dictionary
 # The score attribute could be either a score_value (int) or score_id (String)
-func save_score(player_name: String, score, ldboard_name: String="main", metadata: Dictionary={}) -> LoudWolfScores:
+func save_score_async(player_name: String, score, ldboard_name: String="main", metadata: Dictionary={}) -> LoudWolfScores:
 	# player_name must be present
 	if player_name == null or player_name == "":
 		SWLogger.error("ERROR in LoudWolf.Scores.persist_score - please enter a valid player name")
@@ -82,7 +82,8 @@ func save_score(player_name: String, score, ldboard_name: String="main", metadat
 		
 		var score_uuid = UUID.generate_uuid_v4()
 		score_id = score_uuid
-		var payload = { 
+		## The Score dictionary
+		var payload:Dictionary = { 
 			"score_id" : score_id, 
 			"player_name" : player_name, 
 			"game_id": game_id,  
@@ -100,6 +101,9 @@ func save_score(player_name: String, score, ldboard_name: String="main", metadat
 		LoudWolf.send_post_request(SaveScore, request_url, payload)
 	return self
 
+func save_score(player_name: String, score, ldboard_name: String="main", metadata: Dictionary={}):
+	save_score_async(player_name,score,ldboard_name,metadata)
+	await sw_save_score_complete
 
 func _on_SaveScore_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -116,7 +120,7 @@ func _on_SaveScore_request_completed(result: int, response_code: int, headers: P
 		sw_save_score_complete.emit(sw_result)
 
 
-func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> LoudWolfScores:
+func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> LoudWolfScores:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	GetScores = prepared_http_req.request
 	wrGetScores = prepared_http_req.weakref
@@ -128,6 +132,10 @@ func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int
 	LoudWolf.send_get_request(GetScores, request_url)
 	return self
 
+func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
+	get_scores_async(maximum,ldboard_name,period_offset)
+	await sw_get_scores_complete
+	return scores
 
 func _on_GetScores_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -155,7 +163,7 @@ func _on_GetScores_request_completed(result, response_code, headers, body) -> vo
 		sw_get_scores_complete.emit(sw_result)
 
 
-func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
+func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
 	if player_name == null:
 		SWLogger.error("Error in LoudWolf.Scores.get_scores_by_player: provided player_name is null")
 	else:
@@ -169,6 +177,11 @@ func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: St
 		var request_url = LoudWolf.URLs.get_scores_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(ScoresByPlayer, request_url)
 	return self
+
+func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
+	get_scores_by_player_async(player_name, maximum, ldboard_name, period_offset)
+	await  sw_get_player_scores_complete
+	return scores
 
 
 func _on_GetScoresByPlayer_request_completed(result, response_code, headers, body) -> void:
@@ -191,7 +204,7 @@ func _on_GetScoresByPlayer_request_completed(result, response_code, headers, bod
 		sw_get_player_scores_complete.emit(sw_result)
 
 
-func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
+func get_top_score_by_player_async(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
 	if player_name == null:
 		SWLogger.error("Error in LoudWolf.Scores.get_top_score_by_player: provided player_name is null")
 	else:
@@ -205,6 +218,11 @@ func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name:
 		var request_url = LoudWolf.URLs.get_top_score_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(TopScoreByPlayer, request_url)
 	return self
+
+func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
+	get_top_score_by_player_async(player_name, maximum, ldboard_name , period_offset)
+	await sw_top_player_score_complete
+	return player_top_score
 
 
 func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, body) -> void:
@@ -228,8 +246,8 @@ func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, b
 		sw_top_player_score_complete.emit(sw_result)
 
 
-# The score attribute could be either a score_value (int) or score_id (Sstring)
-func get_score_position(score, ldboard_name: String="main") -> Node:
+# The score attribute could be either a score_value (int) or score_id (String)
+func get_score_position_async(score, ldboard_name: String="main") -> Node:
 	var score_id = null
 	var score_value = null
 	print("score: " + str(score))
@@ -251,6 +269,10 @@ func get_score_position(score, ldboard_name: String="main") -> Node:
 	LoudWolf.send_post_request(ScorePosition, request_url, payload)
 	return self
 
+func get_score_position(score, ldboard_name: String="main") -> int:
+	get_score_position_async(score,ldboard_name)
+	await sw_get_position_complete
+	return position
 
 func _on_GetScorePosition_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -262,6 +284,7 @@ func _on_GetScorePosition_request_completed(result, response_code, headers, body
 		if json_body.success:
 			SWLogger.info("LoudWolf get score position success: " + str(json_body.position))
 			sw_result.position =  int(json_body.position)
+			position=int(json_body.position)
 		else:
 			SWLogger.error("LoudWolf get score position failure: " + str(json_body.error))
 		sw_get_position_complete.emit(sw_result)

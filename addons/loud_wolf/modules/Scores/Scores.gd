@@ -332,7 +332,7 @@ func _on_ScoresAround_request_completed(result, response_code, headers, body) ->
 
 
 
-func delete_score(score_id: String, ldboard_name: String='main') -> Node:
+func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	DeleteScore = prepared_http_req.request
 	wrDeleteScore = prepared_http_req.weakref
@@ -342,6 +342,9 @@ func delete_score(score_id: String, ldboard_name: String='main') -> Node:
 	LoudWolf.send_get_request(DeleteScore, request_url)
 	return self
 
+func delete_score(score_id:String,ldboard_name: String='main'):
+	delete_score_async(score_id,ldboard_name)
+	await sw_delete_score_complete
 
 func _on_DeleteScore_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -359,7 +362,7 @@ func _on_DeleteScore_request_completed(result, response_code, headers, body) -> 
 
 # Deletes all your scores for your game
 # Scores are permanently deleted, no going back!
-func wipe_leaderboard(ldboard_name: String='main') -> Node:
+func wipe_leaderboard_async(ldboard_name: String='main') -> Node:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	WipeLeaderboard = prepared_http_req.request
 	wrWipeLeaderboard = prepared_http_req.weakref
@@ -370,6 +373,9 @@ func wipe_leaderboard(ldboard_name: String='main') -> Node:
 	LoudWolf.send_post_request(WipeLeaderboard, request_url, payload)
 	return self
 
+func wipe_leaderboard(ldboard_name:String="main"):
+	wipe_leaderboard_async(ldboard_name)
+	await  sw_wipe_leaderboard_complete
 
 func _on_WipeLeaderboard_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)

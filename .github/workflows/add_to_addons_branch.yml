@@ -1,4 +1,4 @@
-name: Deploy to Addons Pages
+name: Deploy to Addons
 on:
   push:
     branches:

@@ -9,10 +9,8 @@ const modules_path:=plugin_path+"modules/"
 const utils_path:=modules_path+"Utils/"
 const scores_path:=modules_path+"Scores/"
 const auth_path:=modules_path+"Auth/"
-const examples_path:=plugin_path+"examples/"
 
 #Example paths
-const custom_leaderboards_example_path:=examples_path+"CustomLeaderboards/"
 var URLs=LoudWolfURLs.new()
 
 const SWUtils := preload(LoudWolf.utils_path+"SWUtils.gd")

@@ -1,7 +1,7 @@
 extends Node
 class_name LoudWolfMultiplayer
 
-@onready var WSClient = Node.new()
+@onready var WSClient = WSMultiplayer.new()
 
 var mp_ws_ready = false
 var mp_session_started = false
@@ -12,8 +12,6 @@ var mp_player_name = ""
 func _ready():
 	mp_ws_ready = false
 	mp_session_started = false
-	var ws_client_script = load("../Multiplayer/ws/WSClient.gd")
-	WSClient.set_script(ws_client_script)
 	add_child(WSClient)
 
 

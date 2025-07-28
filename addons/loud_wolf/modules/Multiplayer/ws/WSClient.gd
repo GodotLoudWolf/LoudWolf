@@ -1,4 +1,6 @@
 extends Node
+class_name WSMultiplayer
+
 
 const SWLogger = preload(LoudWolf.utils_path+"SWLogger.gd")
 

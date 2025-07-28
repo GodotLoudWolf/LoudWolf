@@ -1,0 +1,18 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Add addons folder to the oly_addons folder branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: only_addons_dir
+          FOLDER: addons
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Updates addons folder with commit:{msg}"

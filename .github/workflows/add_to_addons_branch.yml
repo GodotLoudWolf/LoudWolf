@@ -1,12 +1,12 @@
-name: Deploy to GitHub Pages
+name: Deploy to Addons Pages
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
-    name: Add addons folder to the oly_addons folder branch
+    name: Add addons folder to the only_addons folder branch
     runs-on: ubuntu-latest
     steps:
       - uses: s0/git-publish-subdir-action@develop

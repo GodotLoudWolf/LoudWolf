@@ -128,7 +128,7 @@ func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offse
 	SWLogger.info("Calling LoudWolf backend to get scores...")
 	# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 	latest_max = maximum
-	var request_url = LoudWolf.URLs.get_scores+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name) + "&period_offset=" + str(period_offset)
+	var request_url = LoudWolf.URLs.get_scores(maximum,ldboard_name,period_offset)
 	LoudWolf.send_get_request(GetScores, request_url)
 	return self
 

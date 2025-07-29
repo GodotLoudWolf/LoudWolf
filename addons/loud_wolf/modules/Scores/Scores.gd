@@ -24,7 +24,7 @@ var leaderboards_past_periods := {}
 var ldboard_config := {}
 
 # contains only the scores from one leaderboard at a time
-var scores :Array[Dictionary]= []
+var scores :Array[Score]= []
 var player_scores := []
 var player_top_score = null
 var local_scores := []
@@ -33,6 +33,15 @@ var score_id := ""
 var position := 0.0
 var scores_above := []
 var scores_below  := []
+
+
+class Score:
+	var score_id:String=""
+	var score:float=0
+	var player_name:String=""
+	var metadata:Dictionary={}
+	var position:int=-1
+	var timestamp:float=-1
 
 #var request_timeout = 3
 #var request_timer = null
@@ -134,14 +143,14 @@ func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offse
 
 
 ## Get highest scores
-func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
+func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array[Score]:
 	get_scores_async(maximum,ldboard_name,period_offset)
 	await sw_get_scores_complete
 	return scores
 
 
 ## Get all scores
-func get_all_scores(ldboard_name: String="main", period_offset: int=0) -> Array:
+func get_all_scores(ldboard_name: String="main", period_offset: int=0) -> Array[Score]:
 	return await get_scores(0,ldboard_name,period_offset)
 
 
@@ -171,7 +180,7 @@ func _on_GetScores_request_completed(result, response_code, headers, body) -> vo
 		sw_get_scores_complete.emit(sw_result)
 
 
-func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
+func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> LoudWolfScores:
 	if player_name == null:
 		SWLogger.error("Error in LoudWolf.Scores.get_scores_by_player: provided player_name is null")
 	else:
@@ -188,7 +197,7 @@ func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_na
 
 
 ## Get scores of player
-func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
+func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array[Score]:
 	get_scores_by_player_async(player_name, maximum, ldboard_name, period_offset)
 	await  sw_get_player_scores_complete
 	return scores
@@ -246,10 +255,7 @@ func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, b
 			if !json_body.top_score.is_empty():
 				player_top_score = translate_score_fields(json_body.top_score)
 				SWLogger.debug("Top score for " + json_body.player_name +  ": " + str(player_top_score))
-				var ld_name = json_body.ld_name
-				var ld_config = json_body.ld_config
-				var player_name = json_body.player_name
-				sw_result.top_score = player_top_score
+				player_top_score = player_top_score
 		else:
 			SWLogger.error("LoudWolf get top score by player failure: " + str(json_body.error))
 		sw_top_player_score_complete.emit(sw_result)
@@ -415,23 +421,23 @@ func add_to_local_scores(game_result: Dictionary, ld_name: String="main") -> voi
 	SWLogger.debug("local scores: " + str(local_scores))
 
 
-func translate_score_fields_in_array(scores: Array) -> Array[Dictionary]:
-	var translated_scores:Array[Dictionary] = []
+func translate_score_fields_in_array(scores: Array) -> Array[Score]:
+	var translated_scores:Array[Score] = []
 	for score in scores:
 		var new_score = translate_score_fields(score)
 		translated_scores.append(new_score)
 	return translated_scores
 
 
-func translate_score_fields(score: Dictionary) -> Dictionary:
-	var translated_score = {}
-	translated_score["score_id"] = score["sid"]
-	translated_score["score"] = score["s"]
-	translated_score["player_name"] = score["pn"]
+func translate_score_fields(score: Dictionary) -> Score:
+	var real_score:Score =Score.new() 
+	real_score.score_id = score["sid"]
+	real_score.score = score["s"]
+	real_score.player_name = score["pn"]
 	if "md" in score:
-		translated_score["metadata"] = score["md"]
+		real_score.metadata = score["md"]
 	if "position" in score:
-		translated_score["position"] = score["position"]
+		real_score.position = score["position"]
 	if "t" in score:
-		translated_score["timestamp"] = score["t"]
-	return translated_score
+		real_score.timestamp = score["t"]
+	return real_score

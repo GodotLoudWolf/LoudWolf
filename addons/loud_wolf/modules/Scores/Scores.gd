@@ -128,14 +128,20 @@ func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offse
 	SWLogger.info("Calling LoudWolf backend to get scores...")
 	# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 	latest_max = maximum
-	var request_url = LoudWolf.URLs.get_scores+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name) + "&period_offset=" + str(period_offset)
+	var request_url = LoudWolf.URLs.get_scores(maximum,ldboard_name,period_offset)
 	LoudWolf.send_get_request(GetScores, request_url)
 	return self
+
 
 func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_async(maximum,ldboard_name,period_offset)
 	await sw_get_scores_complete
 	return scores
+
+
+func get_all_scores(ldboard_name: String="main", period_offset: int=0) -> Array:
+	return await get_scores(0,ldboard_name,period_offset)
+
 
 func _on_GetScores_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -174,9 +180,10 @@ func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_na
 		SWLogger.info("Calling LoudWolf backend to get scores for player: " + str(player_name))
 		# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 		latest_max = maximum
-		var request_url = LoudWolf.URLs.get_scores_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
+		var request_url =LoudWolf.URLs.get_scores_by_player(player_name,maximum,ldboard_name,period_offset)
 		LoudWolf.send_get_request(ScoresByPlayer, request_url)
 	return self
+
 
 func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_by_player_async(player_name, maximum, ldboard_name, period_offset)
@@ -195,9 +202,6 @@ func _on_GetScoresByPlayer_request_completed(result, response_code, headers, bod
 			SWLogger.info("LoudWolf get scores by player success, found " + str(json_body.top_scores.size()) + " scores.")
 			player_scores = translate_score_fields_in_array(json_body.top_scores)
 			SWLogger.debug("Scores for " + json_body.player_name +  ": " + str(player_scores))
-			var ld_name = json_body.ld_name
-			var ld_config = json_body.ld_config
-			var player_name = json_body.player_name
 			sw_result.scores = player_scores
 		else:
 			SWLogger.error("LoudWolf get scores by player failure: " + str(json_body.error))
@@ -218,6 +222,7 @@ func get_top_score_by_player_async(player_name: String, maximum: int=10, ldboard
 		var request_url = LoudWolf.URLs.get_top_score_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(TopScoreByPlayer, request_url)
 	return self
+
 
 func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
 	get_top_score_by_player_async(player_name, maximum, ldboard_name , period_offset)
@@ -331,7 +336,6 @@ func _on_ScoresAround_request_completed(result, response_code, headers, body) ->
 		sw_get_scores_around_complete.emit(sw_result)
 
 
-
 func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	DeleteScore = prepared_http_req.request
@@ -342,9 +346,11 @@ func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	LoudWolf.send_get_request(DeleteScore, request_url)
 	return self
 
+
 func delete_score(score_id:String,ldboard_name: String='main'):
 	delete_score_async(score_id,ldboard_name)
 	await sw_delete_score_complete
+
 
 func _on_DeleteScore_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)

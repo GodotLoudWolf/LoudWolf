@@ -6,5 +6,4 @@ func _ready() -> void:
 	await LoudWolf.Scores.get_scores()
 	await LoudWolf.Scores.get_all_scores()
 	await LoudWolf.Scores.get_scores_by_player("Angelator312")
-	await LoudWolf.Scores.get_score_position(312)
-	await LoudWolf.Scores.get_top_score_by_player("Angelator312")
+	print(await LoudWolf.Scores.get_score_position(10))

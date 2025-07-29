@@ -132,10 +132,16 @@ func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offse
 	LoudWolf.send_get_request(GetScores, request_url)
 	return self
 
+
 func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_async(maximum,ldboard_name,period_offset)
 	await sw_get_scores_complete
 	return scores
+
+
+func get_all_scores(ldboard_name: String="main", period_offset: int=0) -> Array:
+	return await get_scores(0,ldboard_name,period_offset)
+
 
 func _on_GetScores_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -178,6 +184,7 @@ func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_na
 		LoudWolf.send_get_request(ScoresByPlayer, request_url)
 	return self
 
+
 func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_by_player_async(player_name, maximum, ldboard_name, period_offset)
 	await  sw_get_player_scores_complete
@@ -218,6 +225,7 @@ func get_top_score_by_player_async(player_name: String, maximum: int=10, ldboard
 		var request_url = LoudWolf.URLs.get_top_score_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
 		LoudWolf.send_get_request(TopScoreByPlayer, request_url)
 	return self
+
 
 func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
 	get_top_score_by_player_async(player_name, maximum, ldboard_name , period_offset)
@@ -331,7 +339,6 @@ func _on_ScoresAround_request_completed(result, response_code, headers, body) ->
 		sw_get_scores_around_complete.emit(sw_result)
 
 
-
 func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	var prepared_http_req = LoudWolf.prepare_http_request()
 	DeleteScore = prepared_http_req.request
@@ -342,9 +349,11 @@ func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	LoudWolf.send_get_request(DeleteScore, request_url)
 	return self
 
+
 func delete_score(score_id:String,ldboard_name: String='main'):
 	delete_score_async(score_id,ldboard_name)
 	await sw_delete_score_complete
+
 
 func _on_DeleteScore_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)

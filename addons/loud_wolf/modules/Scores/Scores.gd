@@ -133,12 +133,14 @@ func get_scores_async(maximum: int=10, ldboard_name: String="main", period_offse
 	return self
 
 
+## Get highest scores
 func get_scores(maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_async(maximum,ldboard_name,period_offset)
 	await sw_get_scores_complete
 	return scores
 
 
+## Get all scores
 func get_all_scores(ldboard_name: String="main", period_offset: int=0) -> Array:
 	return await get_scores(0,ldboard_name,period_offset)
 
@@ -185,6 +187,7 @@ func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_na
 	return self
 
 
+## Get scores of player
 func get_scores_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Array:
 	get_scores_by_player_async(player_name, maximum, ldboard_name, period_offset)
 	await  sw_get_player_scores_complete
@@ -224,6 +227,7 @@ func get_top_score_by_player_async(player_name: String, maximum: int=10, ldboard
 	return self
 
 
+## Get top score of player
 func get_top_score_by_player(player_name: String, maximum: int=10, ldboard_name: String="main", period_offset: int=0) -> Node:
 	get_top_score_by_player_async(player_name, maximum, ldboard_name , period_offset)
 	await sw_top_player_score_complete
@@ -251,7 +255,7 @@ func _on_GetTopScoreByPlayer_request_completed(result, response_code, headers, b
 		sw_top_player_score_complete.emit(sw_result)
 
 
-# The score attribute could be either a score_value (int) or score_id (String)
+## The score attribute could be either a score_value (int) or score_id (String)
 func get_score_position_async(score, ldboard_name: String="main") -> Node:
 	var score_id = null
 	var score_value = null
@@ -274,10 +278,13 @@ func get_score_position_async(score, ldboard_name: String="main") -> Node:
 	LoudWolf.send_post_request(ScorePosition, request_url, payload)
 	return self
 
+
+## Get position of score(float or score_id)
 func get_score_position(score, ldboard_name: String="main") -> int:
 	get_score_position_async(score,ldboard_name)
 	await sw_get_position_complete
 	return position
+
 
 func _on_GetScorePosition_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -347,6 +354,7 @@ func delete_score_async(score_id: String, ldboard_name: String='main') -> Node:
 	return self
 
 
+## Delete score with score_id:UUID
 func delete_score(score_id:String,ldboard_name: String='main'):
 	delete_score_async(score_id,ldboard_name)
 	await sw_delete_score_complete
@@ -379,9 +387,12 @@ func wipe_leaderboard_async(ldboard_name: String='main') -> Node:
 	LoudWolf.send_post_request(WipeLeaderboard, request_url, payload)
 	return self
 
+
+## Deletes all scores in the leaderboard
 func wipe_leaderboard(ldboard_name:String="main"):
 	wipe_leaderboard_async(ldboard_name)
 	await  sw_wipe_leaderboard_complete
+
 
 func _on_WipeLeaderboard_request_completed(result, response_code, headers, body) -> void:
 	var status_check = SWUtils.check_http_response(response_code, headers, body)
@@ -397,6 +408,7 @@ func _on_WipeLeaderboard_request_completed(result, response_code, headers, body)
 		sw_wipe_leaderboard_complete.emit(sw_result)
 
 
+## adds game_result to local_scores
 func add_to_local_scores(game_result: Dictionary, ld_name: String="main") -> void:
 	var local_score = { "score_id": game_result.score_id, "game_id" : game_result.game_id, "player_name": game_result.player_name, "score": game_result.score }
 	local_scores.append(local_score)

@@ -180,7 +180,7 @@ func get_scores_by_player_async(player_name: String, maximum: int=10, ldboard_na
 		SWLogger.info("Calling LoudWolf backend to get scores for player: " + str(player_name))
 		# resetting the latest_number value in case the first requests times out, we need to request the same amount of top scores in the retry
 		latest_max = maximum
-		var request_url = LoudWolf.URLs.get_scores_by_player+"/" + str(LoudWolf.config.game_id) + "?max=" + str(maximum)  + "&ldboard_name=" + str(ldboard_name.uri_encode()) + "&player_name=" + str(player_name.uri_encode()) + "&period_offset=" + str(period_offset)
+		var request_url =LoudWolf.URLs.get_scores_by_player(player_name,maximum,ldboard_name,period_offset)
 		LoudWolf.send_get_request(ScoresByPlayer, request_url)
 	return self
 
@@ -202,9 +202,6 @@ func _on_GetScoresByPlayer_request_completed(result, response_code, headers, bod
 			SWLogger.info("LoudWolf get scores by player success, found " + str(json_body.top_scores.size()) + " scores.")
 			player_scores = translate_score_fields_in_array(json_body.top_scores)
 			SWLogger.debug("Scores for " + json_body.player_name +  ": " + str(player_scores))
-			var ld_name = json_body.ld_name
-			var ld_config = json_body.ld_config
-			var player_name = json_body.player_name
 			sw_result.scores = player_scores
 		else:
 			SWLogger.error("LoudWolf get scores by player failure: " + str(json_body.error))

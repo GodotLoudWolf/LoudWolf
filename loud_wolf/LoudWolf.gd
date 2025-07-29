@@ -11,7 +11,7 @@ const scores_path:=modules_path+"Scores/"
 const auth_path:=modules_path+"Auth/"
 
 #Example paths
-var URLs=LoudWolfURLs.new()
+var URLs:=LoudWolfURLs.new()
 
 const SWUtils := preload(LoudWolf.utils_path+"SWUtils.gd")
 const SWHashing := preload(LoudWolf.utils_path+"SWHashing.gd")
